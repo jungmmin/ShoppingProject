@@ -25,11 +25,9 @@ public class MemberService {
     public void saveMember(MemberCreateDto memberCreateDto) {
 
         // 비밀번호 암호화 후 저장
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        memberCreateDto.setPassword(encoder.encode(memberCreateDto.getPassword()));
-//
-//        BCryptPasswordEncoder encoder2 = new BCryptPasswordEncoder();
-//        log.info("비밀번호 무결성 = {}", encoder2.matches(encoder.encode(memberCreateDto.getPassword()), memberCreateDto.getPassword()));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPwd = encoder.encode(memberCreateDto.getPassword());
+        memberCreateDto.setPassword(encodedPwd);
         memberRepository.save(memberCreateDto.toEntity());
     }
 

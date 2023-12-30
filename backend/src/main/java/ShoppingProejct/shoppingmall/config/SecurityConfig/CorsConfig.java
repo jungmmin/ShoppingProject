@@ -1,4 +1,4 @@
-package ShoppingProejct.shoppingmall.config;
+package ShoppingProejct.shoppingmall.config.SecurityConfig;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
