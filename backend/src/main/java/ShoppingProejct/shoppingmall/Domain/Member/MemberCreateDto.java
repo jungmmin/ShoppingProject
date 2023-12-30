@@ -7,8 +7,6 @@ import lombok.Data;
  * 회원 가입시 사용하는 멤버 DTO
  */
 @Data
-@AllArgsConstructor
-
 public class MemberCreateDto {
 
     private String email;

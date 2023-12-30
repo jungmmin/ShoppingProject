@@ -1,6 +1,7 @@
 package ShoppingProejct.shoppingmall.controller;
 
 import ShoppingProejct.shoppingmall.Domain.Member.MemberCreateDto;
+import ShoppingProejct.shoppingmall.Domain.Member.MemberLoginDto;
 import ShoppingProejct.shoppingmall.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,11 @@ public class MemberController {
     // 회원가입
     @PostMapping("/users/register")
     public void registerUser(@RequestBody MemberCreateDto memberCreateDto){
-        log.info("회원가입 정보 확인 = {}" , memberCreateDto.toString());
         memberService.saveMember(memberCreateDto);
+    }
+
+    @PostMapping("/users/login")
+    public void loginUser(@RequestBody MemberLoginDto memberLoginDto){
+
     }
 }
