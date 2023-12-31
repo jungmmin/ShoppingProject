@@ -32,11 +32,15 @@ public class ValidationController {
 
         int memberId = jwtProvider.getMemberId(jwt);
         log.info("멤버 아이디 = {}", memberId);
-        
+
         //멤버 조회
         Member findMember = memberRepository.findById(memberId);
 
         return MemberInfoDto.entityToDto(findMember);
 
+    }
+    @GetMapping("users/logout")
+    public void logoutUser(){
+        log.info("로그아웃 확인");
     }
 }
