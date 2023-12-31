@@ -39,7 +39,7 @@ export const authUser = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const response = await axiosInstance.get(
-                `/users/auth`
+                `/auth`
             )
 
             return response.data;
