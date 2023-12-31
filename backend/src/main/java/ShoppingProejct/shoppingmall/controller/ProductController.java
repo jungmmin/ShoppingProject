@@ -1,22 +1,28 @@
 package ShoppingProejct.shoppingmall.controller;
 
-import ShoppingProejct.shoppingmall.Domain.Member.MemberCreateDto;
-import ShoppingProejct.shoppingmall.Domain.Product.ProductCreateDto;
+import ShoppingProejct.shoppingmall.File.FileItemForm;
+import ShoppingProejct.shoppingmall.File.FileStore;
+import ShoppingProejct.shoppingmall.File.UploadFile;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @Slf4j
 @AllArgsConstructor
 public class ProductController {
 
+    private final FileStore fileStore;
+
     @PostMapping("/products")
-    public void registerUser(@RequestBody ProductCreateDto productCreateDto){
-        log.info("상품 업로드 = {}", productCreateDto);
+    public void newProduct(@ModelAttribute FileItemForm fileItemForm) throws IOException {
+
+        List<MultipartFile> imagesFiles = fileItemForm.getImageFiles();
+        List<UploadFile> uploadFiles = fileStore.storeFiles(imagesFiles);
 
 
     }
