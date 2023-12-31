@@ -74,17 +74,22 @@ public class JwtProvider {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
+            throw new JwtException("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
             /**
              * todo: accesstoken 만료시 refreshtoken 요구
              */
             log.info("만료된 JWT 토큰입니다.");
+            throw new JwtException("만료된 JWT 토큰입니다.");
+
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 토큰입니다.");
+            throw new JwtException("지원되지 않는 JWT 토큰입니다.");
+
         } catch (IllegalArgumentException e) {
             log.info("유효하지 않은 JWT 토큰입니다.");
+            throw new JwtException("유효하지 않은 JWT 토큰입니다.");
         }
-        return false;
     }
 
 }
