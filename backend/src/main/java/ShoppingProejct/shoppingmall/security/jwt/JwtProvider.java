@@ -84,7 +84,7 @@ public class JwtProvider {
              * todo: accesstoken 만료시 refreshtoken 요구
              */
             log.info("만료된 JWT 토큰입니다.");
-            throw new JwtException("만료된 JWT 토큰입니다.");
+            throw new JwtException("jwt is expired");
 
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 토큰입니다.");

@@ -78,11 +78,11 @@ const userSlice = createSlice({
                 state.isLoading = true;
             })
             // 로그아웃 성공
-            .addCase(logoutUser.fulfilled, (state, action) => {
+            .addCase(logoutUser.fulfilled, (state) => {
                 state.isLoading = false;
                 state.userData = initialState.userData;
                 state.isAuth = false;
-                localStorage.removeItem('accessToken')
+                localStorage.removeItem('accessToken');
             })
             // 로그아웃 실패
             .addCase(logoutUser.rejected, (state, action) => {

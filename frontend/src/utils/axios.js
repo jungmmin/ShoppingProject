@@ -12,5 +12,14 @@ axiosInstance.interceptors.request.use(function (config) {
   return Promise.reject(error);
 })
 
-export default axiosInstance;
+// jwt 만료시 리프레시
+axiosInstance.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  if(error.response.data === 'jwt is expired'){
+    window.location.reload();
+  }
+  return Promise.reject(error);
+})
 
+export default axiosInstance;
