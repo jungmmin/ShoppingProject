@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {authUser, loginUser, registerUser} from "./thunkFunctions.js";
+import {authUser, loginUser, logoutUser, registerUser} from "./thunkFunctions.js";
 import {toast} from "react-toastify";
 
 const initialState = {
@@ -70,7 +70,25 @@ const userSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.payload;
                 state.isAuth = false
-                localStorage.removeItem('accessToekn');
+                localStorage.removeItem('accessToken');
+            })
+
+            // 로그아웃
+            .addCase(logoutUser.pending, (state) => {
+                state.isLoading = true;
+            })
+            // 로그아웃 성공
+            .addCase(logoutUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.userData = initialState.userData;
+                state.isAuth = false;
+                localStorage.removeItem('accessToken')
+            })
+            // 로그아웃 실패
+            .addCase(logoutUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                toast.error(action.payload);
             })
 
     }
