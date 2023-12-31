@@ -5,10 +5,14 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.json.BasicJsonParser;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * JWT 토큰 관리 서비스
@@ -90,6 +94,22 @@ public class JwtProvider {
             log.info("유효하지 않은 JWT 토큰입니다.");
             throw new JwtException("유효하지 않은 JWT 토큰입니다.");
         }
+    }
+
+    /*
+        jwt의 회원 번호 조회
+     */
+    public int getMemberId(String jwt) {
+        // payload, decoder 생성
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String payload = jwt.split("\\.")[1];
+
+        // memberId 조회
+        payload = new String(decoder.decode(payload));
+        JsonParser jsonParser = new BasicJsonParser();
+        Map<String, Object> payloadArray = jsonParser.parseMap(payload);
+
+        return Integer.parseInt((String) payloadArray.get("memberId"));
     }
 
 }

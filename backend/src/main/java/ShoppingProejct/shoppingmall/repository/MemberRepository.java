@@ -33,6 +33,16 @@ public class MemberRepository {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public Member findById(int memberId) {
+        try{
+            return em.createQuery("select m from Member m where m.id = :memberId", Member.class)
+                    .setParameter("memberId", memberId)
+                    .getSingleResult();
+        }catch (NoResultException e){
+            return null;
+        }
 
 
     }
