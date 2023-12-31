@@ -1,14 +1,17 @@
 package ShoppingProejct.shoppingmall.controller;
 
 import ShoppingProejct.shoppingmall.Domain.Member.MemberCreateDto;
+import ShoppingProejct.shoppingmall.Domain.Member.MemberInfoDto;
 import ShoppingProejct.shoppingmall.Domain.Member.MemberLoginDto;
 import ShoppingProejct.shoppingmall.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * 멤버 컨트롤러
@@ -27,7 +30,13 @@ public class MemberController {
     }
 
     @PostMapping("/users/login")
-    public void loginUser(@RequestBody MemberLoginDto memberLoginDto){
+    public ResponseEntity<Object> loginUser(@RequestBody MemberLoginDto memberLoginDto){
+        Object[] objects = memberService.loginMember(memberLoginDto);
+
+        MemberInfoDto memberInfoDto = (MemberInfoDto) objects[0];
+        String jwt = (String) objects[1];
+
+        return ResponseEntity.ok().body(Map.of("user", memberInfoDto, "accessToken", jwt));
 
     }
 }

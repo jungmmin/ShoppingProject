@@ -1,4 +1,4 @@
-package ShoppingProejct.shoppingmall.Security;
+package ShoppingProejct.shoppingmall.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
