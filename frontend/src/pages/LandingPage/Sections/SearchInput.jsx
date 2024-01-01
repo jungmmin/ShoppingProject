@@ -1,11 +1,11 @@
 import React from 'react';
 
-const RadioBox = () => {
+const SearchInput = () => {
     return (
         <div>
-            RadioBox
+            SearchInput
         </div>
     );
 };
 
-export default RadioBox;
+export default SearchInput;
