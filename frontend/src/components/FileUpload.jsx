@@ -1,9 +1,8 @@
-import React from 'react'
 import Dropzone from 'react-dropzone'
 import axiosInstance from '../utils/axios';
 
-// eslint-disable-next-line react/prop-types
 // 파일 전송 api(/products/image)
+// eslint-disable-next-line react/prop-types
 const FileUpload = ({ onImageChange, images }) => {
 
     const handleDrop = async (files) => {
@@ -13,11 +12,15 @@ const FileUpload = ({ onImageChange, images }) => {
             header: { 'content-type': 'multipart/form-data' }
         }
 
-        formData.append('file', files[0]);
+        formData.append('imageFiles', files[0]);
 
         try {
             const response = await axiosInstance.post('/products/image', formData, config);
-            onImageChange([...images, response.data.fileName]);
+            const imageUrl = response.data.fileName;
+
+            console.log(imageUrl);
+            // onImageChange([...images, response.data.fileName]);
+            onImageChange([...images, imageUrl]);
 
         } catch (error) {
             console.error(error);
@@ -55,10 +58,11 @@ const FileUpload = ({ onImageChange, images }) => {
             {/*업로드된 이미지 표시*/}
             <div className='flex-grow h-[300px] border flex  items-center justify-center overflow-x-scroll overflow-y-hidden'>
                 {images.map(image => (
-                    <div key={image} onClick={() =>handleDelete(image)}>
+                    <div key={image}  onClick={() =>handleDelete(image)}>
                         <img
                             className='min-w-[300px] h-[300px]'
-                            src={`${import.meta.env.VITE_SERVER_URL}/${image}`}
+                            // src={`${import.meta.env.VITE_SERVER_URL}/${image}`}
+                            src={`${image}`}
                             alt={image}
                         />
                     </div>
