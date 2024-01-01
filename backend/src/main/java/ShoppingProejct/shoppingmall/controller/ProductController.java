@@ -1,6 +1,8 @@
 package ShoppingProejct.shoppingmall.controller;
 
 import ShoppingProejct.shoppingmall.Domain.Product.ProductCreateDto;
+import ShoppingProejct.shoppingmall.Domain.Product.ProductInfoDto;
+import ShoppingProejct.shoppingmall.Domain.Product.ProductSearchDto;
 import ShoppingProejct.shoppingmall.File.FileItemForm;
 import ShoppingProejct.shoppingmall.File.FileStore;
 import ShoppingProejct.shoppingmall.File.UploadFile;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,9 +41,41 @@ public class ProductController {
      */
     @PostMapping("/products")
     public void uploadProduct(@RequestBody ProductCreateDto productCreateDto, HttpServletRequest request) {
-        int memberId = (Integer)  request.getAttribute("auth_memberId");
+        int memberId = (Integer) request.getAttribute("auth_memberId");
         log.info("요청 아이디 = {}", memberId);
         log.info("상품 업로드 = {}", productCreateDto);
+
+    }
+
+    /**
+     * 상품 조회
+     */
+    @GetMapping("/products")
+    public ResponseEntity<Map<String, Object>> getProducts(@ModelAttribute ProductSearchDto productSearchDto){
+        log.info("상품 조회 = {}", productSearchDto);
+
+        List<ProductInfoDto> list = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            ProductInfoDto productInfoDto = new ProductInfoDto(
+                    i+1,
+                    1,
+                    "des" + i,
+                    new String[]{"https://i.imgur.com/rDZbFUA.png", "https://i.imgur.com/rDZbFUA.png"},
+                    i + 1,
+                    i+2,
+                    "title" + i,
+                    i + 3,
+                    "member" + 1
+                    );
+            list.add(productInfoDto);
+        }
+
+        boolean hasMore = false;
+        if (productSearchDto.getSkip() + productSearchDto.getLimit() < 12) {
+            hasMore = true;
+        }
+        log.info("hasMore = {}", hasMore);
+        return ResponseEntity.ok().body(Map.of("products", list, "hasMore", hasMore));
 
     }
 }
