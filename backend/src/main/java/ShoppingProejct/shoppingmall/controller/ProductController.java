@@ -51,22 +51,22 @@ public class ProductController {
      * 상품 조회
      */
     @GetMapping("/products")
-    public ResponseEntity<Map<String, Object>> getProducts(@ModelAttribute ProductSearchDto productSearchDto){
+    public ResponseEntity<Map<String, Object>> getProducts(@ModelAttribute ProductSearchDto productSearchDto) {
         log.info("상품 조회 = {}", productSearchDto);
 
         List<ProductInfoDto> list = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             ProductInfoDto productInfoDto = new ProductInfoDto(
-                    i+1,
+                    i + 1,
                     1,
                     "des" + i,
                     new String[]{"https://i.imgur.com/rDZbFUA.png", "https://i.imgur.com/rDZbFUA.png"},
                     i + 1,
-                    i+2,
+                    i + 2,
                     "title" + i,
                     i + 3,
                     "member" + 1
-                    );
+            );
             list.add(productInfoDto);
         }
 
@@ -77,5 +77,21 @@ public class ProductController {
         log.info("hasMore = {}", hasMore);
         return ResponseEntity.ok().body(Map.of("products", list, "hasMore", hasMore));
 
+    }
+
+    @GetMapping("/products/{id}")
+    public ProductInfoDto getProduct(@PathVariable("id") String productId) {
+        int i = 1;
+        return new ProductInfoDto(
+                i + 1,
+                1,
+                "des" + i,
+                new String[]{"https://i.imgur.com/rDZbFUA.png", "https://i.imgur.com/rDZbFUA.png"},
+                i + 1,
+                i + 2,
+                "title" + i,
+                i + 3,
+                "member" + 1
+        );
     }
 }

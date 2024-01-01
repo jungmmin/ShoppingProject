@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import CheckBox from "./Sections/CheckBox.jsx";
-import RadioBox from "./Sections/RadioBox.jsx";
 import SearchInput from "./Sections/SearchInput.jsx";
 import CardItem from "./Sections/CardItem.jsx";
 import axiosInstance from "../../utils/axios.js";
 
 const LandingPage = () => {
     const limit = 4;
+    const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
     const [skip, setSkip] = useState(0);
     const [hasMore, setHasMore] = useState(false);
@@ -64,6 +63,18 @@ const LandingPage = () => {
         setSkip(skip + limit);
     }
 
+    const handleSearchTerm = (event) => {
+        const body = {
+            skip: 0,
+            limit,
+            filters,
+            searchTerm: event.target.value
+        }
+        setSkip(0);
+        setSearchTerm(event.target.value);
+        fetchProducts(body);
+    }
+
     return (
         <section>
             <div className={'text-center m-7'}>
@@ -71,24 +82,11 @@ const LandingPage = () => {
             </div>
             {/*Filter*/}
             <div>
-                <div className={'flex '}>
-                    <div className={'w-1/2 gap-3'}>
-                        <CheckBox/>
-                    </div>
-
-                    <div className={'w-1/2 gap-3'}>
-                        <RadioBox/>
-                    </div>
-
-                </div>
-                <div>
-
-                </div>
             </div>
 
             {/*Search*/}
             <div className={'flex justify-end'}>
-                <SearchInput/>
+                <SearchInput searchTerm={searchTerm} onSearch={handleSearchTerm} />
             </div>
             {/*Card*/}
             <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>

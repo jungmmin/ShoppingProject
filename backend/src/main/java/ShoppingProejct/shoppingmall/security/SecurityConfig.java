@@ -36,7 +36,7 @@ public class SecurityConfig {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                config.setAllowedOrigins(Collections.singletonList("http://localhost:5174"));
                 config.setAllowedMethods(Collections.singletonList("*"));
                 config.setAllowCredentials(true);
                 config.setAllowedHeaders(Collections.singletonList("*"));
@@ -68,12 +68,15 @@ public class SecurityConfig {
         ).requestMatchers(HttpMethod.GET, "/products");
     }
 
+    /**
+     * 필터 제외 대상 CORS
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:5173");
+                registry.addMapping("/**").allowedOrigins("http://localhost:5174");
             }
         };
     }
