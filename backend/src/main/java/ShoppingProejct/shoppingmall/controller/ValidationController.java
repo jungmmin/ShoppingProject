@@ -30,7 +30,7 @@ public class ValidationController {
         // jwt memberId 조회
         jwtProvider.validationToken(jwt);
 
-        int memberId = jwtProvider.getMemberId(jwt);
+        Long memberId = (long) jwtProvider.getMemberId(jwt);
         log.info("멤버 아이디 = {}", memberId);
 
         //멤버 조회

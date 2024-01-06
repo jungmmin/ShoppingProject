@@ -1,11 +1,14 @@
 package ShoppingProejct.shoppingmall.controller;
 
+import ShoppingProejct.shoppingmall.Domain.Product.Product;
 import ShoppingProejct.shoppingmall.Domain.Product.ProductCreateDto;
 import ShoppingProejct.shoppingmall.Domain.Product.ProductInfoDto;
 import ShoppingProejct.shoppingmall.Domain.Product.ProductSearchDto;
 import ShoppingProejct.shoppingmall.File.FileItemForm;
 import ShoppingProejct.shoppingmall.File.FileStore;
 import ShoppingProejct.shoppingmall.File.UploadFile;
+import ShoppingProejct.shoppingmall.service.FileService;
+import ShoppingProejct.shoppingmall.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,16 +26,16 @@ import java.util.Map;
 @AllArgsConstructor
 public class ProductController {
 
-    private final FileStore fileStore;
+    private final FileService fileService;
+    private final ProductService productService;
 
     // 상품 이미지 등록
     @PostMapping("/products/image")
     public ResponseEntity<Map<String, String>> uploadImage(@ModelAttribute FileItemForm fileItemForm) throws IOException {
 
-        List<MultipartFile> imagesFiles = fileItemForm.getImageFiles();
-        List<UploadFile> uploadFiles = fileStore.storeFiles(imagesFiles);
+        String fileName = fileService.saveImage(fileItemForm);
 
-        return ResponseEntity.ok().body(Map.of("fileName", "https://i.imgur.com/rDZbFUA.png"));
+        return ResponseEntity.ok().body(Map.of("fileName", fileName));
     }
 
     /**
@@ -41,9 +44,12 @@ public class ProductController {
      */
     @PostMapping("/products")
     public void uploadProduct(@RequestBody ProductCreateDto productCreateDto, HttpServletRequest request) {
-        int memberId = (Integer) request.getAttribute("auth_memberId");
+        long memberId = Long.parseLong(String.valueOf(request.getAttribute("auth_memberId")));
+
         log.info("요청 아이디 = {}", memberId);
         log.info("상품 업로드 = {}", productCreateDto);
+
+        productService.saveProduct(productCreateDto, memberId);
 
     }
 
@@ -54,44 +60,22 @@ public class ProductController {
     public ResponseEntity<Map<String, Object>> getProducts(@ModelAttribute ProductSearchDto productSearchDto) {
         log.info("상품 조회 = {}", productSearchDto);
 
-        List<ProductInfoDto> list = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            ProductInfoDto productInfoDto = new ProductInfoDto(
-                    i + 1,
-                    1,
-                    "des" + i,
-                    new String[]{"https://i.imgur.com/rDZbFUA.png", "https://i.imgur.com/rDZbFUA.png"},
-                    i + 1,
-                    i + 2,
-                    "title" + i,
-                    i + 3,
-                    "member" + 1
-            );
-            list.add(productInfoDto);
-        }
+        // 전체 상품 조회
+        List<ProductInfoDto> list = productService.findAll(productSearchDto);
 
+        // 더보기 여부
         boolean hasMore = false;
-        if (productSearchDto.getSkip() + productSearchDto.getLimit() < 12) {
+        if (productSearchDto.getSkip() + productSearchDto.getLimit() < list.size()) {
             hasMore = true;
         }
+
         log.info("hasMore = {}", hasMore);
         return ResponseEntity.ok().body(Map.of("products", list, "hasMore", hasMore));
 
     }
 
     @GetMapping("/products/{id}")
-    public ProductInfoDto getProduct(@PathVariable("id") String productId) {
-        int i = 1;
-        return new ProductInfoDto(
-                i + 1,
-                1,
-                "des" + i,
-                new String[]{"https://i.imgur.com/rDZbFUA.png", "https://i.imgur.com/rDZbFUA.png"},
-                i + 1,
-                i + 2,
-                "title" + i,
-                i + 3,
-                "member" + 1
-        );
+    public ProductInfoDto getProduct(@PathVariable("id") Long productId) {
+        return productService.findProduct(productId);
     }
 }

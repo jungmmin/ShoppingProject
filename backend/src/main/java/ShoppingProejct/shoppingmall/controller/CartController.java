@@ -23,17 +23,7 @@ public class CartController {
         log.info("productId = {}", cartAddDto.getProductId());
         int i = 1;
 
-        return new ProductInfoDto(
-                i + 1,
-                1,
-                "des" + i,
-                new String[]{"https://i.imgur.com/rDZbFUA.png", "https://i.imgur.com/rDZbFUA.png"},
-                i + 1,
-                i + 2,
-                "title" + i,
-                i + 3,
-                "member" + 1
-        );
+        return null;
     }
 
     @GetMapping("user/getCartItems")

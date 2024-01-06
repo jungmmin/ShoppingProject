@@ -35,7 +35,7 @@ public class MemberRepository {
         }
     }
 
-    public Member findById(int memberId) {
+    public Member findById(Long memberId) {
         try{
             return em.createQuery("select m from Member m where m.id = :memberId", Member.class)
                     .setParameter("memberId", memberId)

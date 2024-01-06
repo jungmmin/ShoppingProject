@@ -91,7 +91,6 @@ const UploadProductPage = () => {
                 </div>
 
                 <div className={'mt-4'}>
-                    <label htmlFor='title'>지역</label>
                     <label htmlFor={'continents'}>지역</label>
                     <select
                         className='w-full px-4 py-2 mt-2 bg-white border rounded-md'
